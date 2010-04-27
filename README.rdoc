@@ -1,0 +1,92 @@
+=WebVideo
+
+WebVideo allows you to inspect and process video files.
+
+==Installation
+You need install 'ffmpeg' liblary ant it's dependent's...
+
+===Mac OS
+  sudo port install ffmpeg +lame +libogg +vorbis +faac +faad +xvid +x264 +a52
+
+===Linux (Ubuntu)
+  sudo apt-get install ffmpeg
+  sudo apt-get install libfaac-dev libxvidcore4-dev liba52-0.7.4 liba52-0.7.4-dev libx264-dev
+  sudo apt-get install libavutil49 libavutil-dev libavcodec-dev
+  sudo apt-get install libavcodec-unstripped-52
+
+===Install "WebVideo" plugin
+  rails plugin install http://github.com/galetahub/web_video.git
+
+==Logger
+You can put it in "config/initializers/web_video.rb".
+
+  logfile = File.open(Rails.root.join('log', 'video.log'), 'w')
+  logfile.sync = true
+
+  WebVideo.logger = Logger.new(logfile)
+
+
+==Example
+
+Read video information
+  video = WebVideo::FfmpegAdapter.new('demo.avi')
+  
+  video.filename # => "demo.avi"
+  
+  video.duration # => "00:03:39.90"
+  
+  video.bitrate  # => "2624 kb/s"
+  
+  video.duration_in_seconds # => 219
+  
+  video.streams  # => Array of streams
+    # [ #<WebVideo::Stream @codec="mpeg4", @type="Video", @details="yuv420p, 640x480 [PAR 1:1 DAR 4:3], 30 tbr, 30 tbn, 30 tbc">, 
+    #   #<WebVideo::Stream @codec="mp3", @type="Audio", @details="44100 Hz, stereo, s16, 128 kb/s">]
+
+Video Convertation
+  transcoder = WebVideo::Transcoder.new("demo.avi")
+
+Generate flv file. Next example will generate "demo.flv" from "demo.avi".
+
+  options = {:resolution => "480x360"}
+      
+  begin
+    transcoder.convert("demo.flv", options) do |command|
+      command << "-ar 22050"
+      command << "-ab 128k"
+      command << "-acodec libmp3lame"
+      command << "-vcodec flv"
+      command << "-r 25"
+      command << "-y"
+    end
+  rescue WebVideo::CommandLineError => e
+    WebVideo.logger.error("Unable to transcode video: #{e.class} - #{e.message}")
+    return false
+  end
+
+
+Generate images from video
+It will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
+By default screenshot starts at '00:00:01', to change it pass option :at => '00:05:00'
+
+  image_files = 'demo_%2d.jpg'
+  options = {:resolution => "480x360", :count => 5 }
+
+  begin
+    transcoder.screenshot(image_files, options) do |command|
+      command << "-vcodec mjpeg"
+      # The duration for which image extraction will take place
+      #command << "-t 4"
+      command << "-y"
+    end
+  rescue WebVideo::CommandLineError => e
+    WebVideo.logger.error("Unable to transcode video: #{e.class} - #{e.message}")
+    return false
+  end
+
+==TODO
+1. Add adapter for support 'mencoder' tool
+2. More information about video file
+3. Add support for 'flvtool2'
+
+Copyright (c) 2010 Brainberry, released under the MIT license
