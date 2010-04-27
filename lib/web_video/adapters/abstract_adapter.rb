@@ -5,8 +5,10 @@ module WebVideo
       
       def initialize(filepath, options = {})
         @filepath = filepath
+        
         @filename = File.basename(@filepath)
         @path = File.dirname(@filepath)
+        
         @options = options.symbolize_keys
         @metadata = parse
       end

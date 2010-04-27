@@ -1,18 +1,24 @@
 module WebVideo
   class Transcoder
     attr_accessor :source
+    attr_reader :adapter
     
     def initialize(filepath, options = {}, adapter = :ffmpeg)
       @adapter = adapter
-      args = [filepath, options]
       
-      @source = case @adapter
-        when String, Symbol then
-          load_adapter(@adapter.to_s).new(*args)
-        when Class then
-          @adapter.new(*args)
-        else
-          @adapter
+      if filepath.is_a?(WebVideo::Adapters::AbstractAdapter)
+        @source = filepath
+      else
+        args = [filepath, options]
+        
+        @source = case @adapter
+          when String, Symbol then
+            load_adapter(@adapter.to_s).new(*args)
+          when Class then
+            @adapter.new(*args)
+          else
+            @adapter
+          end
         end
     end
     

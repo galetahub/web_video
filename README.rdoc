@@ -25,11 +25,10 @@ You can put it in "config/initializers/web_video.rb".
 
   WebVideo.logger = Logger.new(logfile)
 
-
 ==Example
 
 Read video information
-  video = WebVideo::FfmpegAdapter.new('demo.avi')
+  video = WebVideo::Adapters::FfmpegAdapter.new('demo.avi')
   
   video.filename # => "demo.avi"
   
@@ -45,6 +44,13 @@ Read video information
 
 Video Convertation
   transcoder = WebVideo::Transcoder.new("demo.avi")
+or
+  transcoder = WebVideo::Transcoder.new(video)
+
+Transcoder attributes
+  transcoder.adapter # => :ffmpeg
+  
+  transcoder.source  # => return WebVideo::Adapters::FfmpegAdapter instance (video)
 
 Generate flv file. Next example will generate "demo.flv" from "demo.avi".
 
@@ -61,14 +67,16 @@ Generate flv file. Next example will generate "demo.flv" from "demo.avi".
     end
   rescue WebVideo::CommandLineError => e
     WebVideo.logger.error("Unable to transcode video: #{e.class} - #{e.message}")
-    return false
   end
 
 
 Generate images from video
-It will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
-By default screenshot starts at '00:00:01', to change it pass option :at => '00:05:00'
+By default screenshot starts at '00:00:01', to change it pass option :at => '00:05:00' (at five minutes)
 
+  transcoder.screenshot("demo.jpg", :resolution => "480x360")
+  
+Next code will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
+  
   image_files = 'demo_%2d.jpg'
   options = {:resolution => "480x360", :count => 5 }
 
@@ -81,12 +89,12 @@ By default screenshot starts at '00:00:01', to change it pass option :at => '00:
     end
   rescue WebVideo::CommandLineError => e
     WebVideo.logger.error("Unable to transcode video: #{e.class} - #{e.message}")
-    return false
   end
 
 ==TODO
 1. Add adapter for support 'mencoder' tool
 2. More information about video file
 3. Add support for 'flvtool2'
+4. Write more documentation
 
 Copyright (c) 2010 Brainberry, released under the MIT license
