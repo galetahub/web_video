@@ -14,8 +14,14 @@ You need install 'ffmpeg' liblary ant it's dependent's...
   sudo apt-get install libavutil49 libavutil-dev libavcodec-dev
   sudo apt-get install libavcodec-unstripped-52
 
-===Install "WebVideo" plugin
+===Install "WebVideo" via plugin
   rails plugin install http://github.com/galetahub/web_video.git
+
+===Install "WebVideo" via gem
+Directly from repository:
+  sudo gem install web_video
+Or in your application "Gemfile":
+  gem "web_video"
 
 ==Logger
 You can put it in "config/initializers/web_video.rb".
