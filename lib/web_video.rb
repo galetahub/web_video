@@ -9,7 +9,10 @@ module WebVideo
     autoload :AbstractAdapter, 'web_video/adapters/abstract_adapter'
     autoload :FfmpegAdapter, 'web_video/adapters/ffmpeg_adapter'
   end
-  
+
+  #
+  # WebVideo.logger.info 'Demo convert'
+  #
   def self.logger
     @logger ||= Logger.new('/dev/null')      
     @logger

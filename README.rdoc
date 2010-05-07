@@ -93,8 +93,9 @@ Next code will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
 
 ==TODO
 1. Add adapter for support 'mencoder' tool
-2. More information about video file
+2. More information about video file (class Stream must parse details)
 3. Add support for 'flvtool2'
 4. Write more documentation
+5. Write tests
 
 Copyright (c) 2010 Brainberry, released under the MIT license

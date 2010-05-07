@@ -21,3 +21,22 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "web_video"
+    gemspec.version = '1.0.0'
+    gemspec.summary = "WebVideo allows you to inspect and process video files"
+    gemspec.description = "WebVideo allows you to inspect, convert and take screenshots from video files"
+    gemspec.email = "galeta.igor@gmail.com"
+    gemspec.homepage = "http://github.com/galetahub/web_video"
+    gemspec.authors = ["Igor Galeta"]
+    gemspec.files = FileList["[A-Z]*", "{lib, test}/**/*"]
+    gemspec.rubyforge_project = "web_video"
+  end
+  
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
+end
