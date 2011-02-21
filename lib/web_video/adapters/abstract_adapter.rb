@@ -1,7 +1,7 @@
 module WebVideo
   module Adapters
     class AbstractAdapter
-      attr_accessor :filepath, :filename, :path
+      attr_accessor :filepath, :filename, :path, :video_streams
       
       def initialize(filepath, options = {})
         @filepath = filepath
@@ -31,6 +31,14 @@ module WebVideo
       
       def streams
         @metadata[:streams]
+      end
+      
+      def video_stream
+        video_streams.first
+      end
+      
+      def video_streams
+        @video_streams ||= streams.select{ |stream| stream.video? }
       end
       
       def command_name
