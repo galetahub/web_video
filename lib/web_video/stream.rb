@@ -36,7 +36,8 @@ module WebVideo
       def extract_resolution_from_details(details)
         return nil if details.blank?
         
-        details[/\s\d+x\d+\s/].strip 
+        result = details[/\s\d+x\d+\s/]
+        result.blank? ? nil : result.strip 
       end
   end
 end
