@@ -52,7 +52,7 @@ module WebVideo
           if installed?
             metadata = {}
             
-            ffmpeg_output = WebVideo::Tools.run(command_name, "-i #{@filepath}", [0,1])
+            ffmpeg_output = WebVideo::Tools.run(command_name, "-i #{@filepath.inspect}", [0,1])
             
             metadata[:duration] = $1 if ffmpeg_output =~ /Duration\: ([0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\.[0-9][0-9])\,/
             metadata[:bitrate] = $1 if ffmpeg_output =~ /\, bitrate\: (.*)$/
