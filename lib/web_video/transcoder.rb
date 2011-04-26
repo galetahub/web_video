@@ -41,14 +41,19 @@ module WebVideo
     # options:
     #   :count  - count images to generate
     #   :format - image decoder
-    #   :at     - time to start make screenshots from
+    #   :at     - sets that image should be taken from the point x seconds from the beginning
     #   :resolution - image resolution
     def screenshot(destination, options = {}, &block)
-      options.symbolize_keys!
+      options = { 
+        :count => 1, 
+        :format => "image2", 
+        :at => "00:00:01" 
+      }.merge(options.symbolize_keys)
       
-      options[:count] ||= 1
-      options[:format] ||= "image2"
-      options[:at] ||= "00:00:01"
+      # Calculate middle video position
+      if options[:at].is_a?(Symbol) && [:center, :middle].include?(options[:at])
+        options[:at] = @source.duration_in_seconds / 2
+      end
       
       process(destination, @source.screenshot_command, options, &block)
     end
