@@ -1,6 +1,7 @@
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require File.join(File.dirname(__FILE__), 'lib', 'web_video', 'version')
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -26,7 +27,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "web_video"
-    gemspec.version = '1.0.0'
+    gemspec.version = WebVideo::VERSION.dup
     gemspec.summary = "WebVideo allows you to inspect and process video files"
     gemspec.description = "WebVideo allows you to inspect, convert and take screenshots from video files"
     gemspec.email = "galeta.igor@gmail.com"

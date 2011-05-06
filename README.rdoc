@@ -78,8 +78,9 @@ Generate flv file. Next example will generate "demo.flv" from "demo.avi".
 
 Generate images from video
 By default screenshot starts at '00:00:01', to change it pass option :at => '00:05:00' (at five minutes)
+Or you can pass :at => :center, to get screenshot from video center
 
-  transcoder.screenshot("demo.jpg", :resolution => "480x360")
+  transcoder.screenshot("demo.jpg", :resolution => "480x360", :at => :center)
   
 Next code will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
   
@@ -104,4 +105,4 @@ Next code will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
 4. Write more documentation
 5. Write tests
 
-Copyright (c) 2010 Brainberry, released under the MIT license
+Copyright (c) 2011 Aimbulance, released under the MIT license
