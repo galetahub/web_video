@@ -32,9 +32,10 @@ You can put it in "config/initializers/web_video.rb".
 
   WebVideo.logger = Logger.new(logfile)
 
-==Example
+== Usage
 
 Read video information
+
   video = WebVideo::Adapters::FfmpegAdapter.new('demo.avi')
   
   video.filename # => "demo.avi"
@@ -50,11 +51,15 @@ Read video information
     #   #<WebVideo::Stream @codec="mp3", @type="Audio", @details="44100 Hz, stereo, s16, 128 kb/s">]
 
 Video Convertation
+
   transcoder = WebVideo::Transcoder.new("demo.avi")
+  
 or
+
   transcoder = WebVideo::Transcoder.new(video)
 
 Transcoder attributes
+
   transcoder.adapter # => :ffmpeg
   
   transcoder.source  # => return WebVideo::Adapters::FfmpegAdapter instance (video)
@@ -99,7 +104,8 @@ Next code will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
     WebVideo.logger.error("Unable to transcode video: #{e.class} - #{e.message}")
   end
 
-==TODO
+== TODO
+
 1. Add adapter for support 'mencoder' tool
 2. More information about video file (class Stream must parse details)
 3. Add support for 'flvtool2'

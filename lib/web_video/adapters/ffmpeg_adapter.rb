@@ -4,8 +4,10 @@ module WebVideo
       
       # 00:21:41.18
       def duration_in_seconds
-        if @metadata[:duration] =~ /([0-9][0-9])\:([0-9][0-9])\:([0-9][0-9])\.([0-9][0-9])/
+        if @metadata[:duration] =~ /(\d+)\:(\d+)\:(\d+)\.(\d+)/
           ( $1.to_i * 60 * 60 ) + ( $2.to_i * 60 ) + ( $3.to_i ) + ( ($4.to_i/100) * 60 )
+        else
+          0
         end
       end
       
@@ -50,17 +52,15 @@ module WebVideo
       private
         def parse
           if installed?
-            metadata = {}
+            metadata = { :streams => [] }
             
             ffmpeg_output = WebVideo::Tools.run(command_name, "-i #{@filepath.inspect}", [0,1])
             
-            metadata[:duration] = $1 if ffmpeg_output =~ /Duration\: ([0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\.[0-9][0-9])\,/
-            metadata[:bitrate] = $1 if ffmpeg_output =~ /\, bitrate\: (.*)$/
+            metadata[:duration] = $1 if ffmpeg_output =~ /Duration\:\s+(\d+\:\d+\:\d+\.\d+)\,/i
+            metadata[:bitrate] = $1 if ffmpeg_output =~ /\,\s+bitrate\:\s+(.*)$/i
             
-            metadata[:streams] = []
-            
-            ffmpeg_output.scan(/stream #0.([0-9])(\[.+\])?:\s(.*):\s([^,]*),\s(.*)/i).each do |match|
-              metadata[:streams] << WebVideo::Stream.new(:type => match[2], :codec => match[3], :details => match[4])
+            ffmpeg_output.scan(/Stream\s+#0.(\d+)(\[.+\])?(\(.+\))?:\s(.*):\s([^,]*),\s(.*)/i).each do |match|
+              metadata[:streams] << WebVideo::Stream.new(:type => match[4], :codec => match[5], :details => match[5])
             end
             
             return metadata
