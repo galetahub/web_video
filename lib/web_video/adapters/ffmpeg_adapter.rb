@@ -60,7 +60,7 @@ module WebVideo
             metadata[:bitrate] = $1 if ffmpeg_output =~ /\,\s+bitrate\:\s+(.*)$/i
             
             ffmpeg_output.scan(/Stream\s+#0.(\d+)(\[.+\])?(\(.+\))?:\s(.*):\s([^,]*),\s(.*)/i).each do |match|
-              metadata[:streams] << WebVideo::Stream.new(:type => match[4], :codec => match[5], :details => match[5])
+              metadata[:streams] << WebVideo::Stream.new(:type => match[3], :codec => match[4], :details => match[5])
             end
             
             return metadata

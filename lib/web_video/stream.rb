@@ -1,6 +1,6 @@
 module WebVideo
   class Stream
-    attr_accessor :type, :codec, :details, :resolution
+    attr_accessor :type, :codec, :details, :width, :height
     
     #
     # stream = Stream.new :type => 'Video', :codec => 'mpeg4', :details => 'yuv420p, 640x480 [PAR 1:1 DAR 4:3], 30 tbr, 30 tbn, 30 tbc'
@@ -13,7 +13,8 @@ module WebVideo
       @type = options[:type].to_s.downcase
       @codec = options[:codec]
       @details = options[:details]
-      @resolution = extract_resolution_from_details(@details)
+      
+      extract_resolution_from_details
     end
     
     def video?
@@ -24,20 +25,19 @@ module WebVideo
       @type == 'audio'
     end
     
-    def width
-      @resolution ? @resolution[/^\d+/] : nil
-    end
-    
-    def height
-      @resolution ? @resolution[/\d+$/] : nil
+    def resolution
+      if width && height
+        "#{width}x#{height}"
+      end
     end
     
     private
-      def extract_resolution_from_details(details)
-        return nil if details.blank?
-        
-        result = details[/\s\d+x\d+\s/]
-        result.blank? ? nil : result.strip 
+    
+      def extract_resolution_from_details
+        if @details =~ /[\s+\,](\d+)x(\d+)[\s+\,]/
+          @width = $1.to_i
+          @height = $2.to_i
+        end
       end
   end
 end
