@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{web_video}
-  s.version = "1.1.1"
+  s.version = "1.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Igor Galeta"]
-  s.date = %q{2011-05-10}
+  s.date = %q{2011-06-06}
   s.description = %q{WebVideo allows you to inspect, convert and take screenshots from video files}
   s.email = %q{galeta.igor@gmail.com}
   s.extra_rdoc_files = [
