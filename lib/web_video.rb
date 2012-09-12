@@ -1,4 +1,5 @@
 require 'logger'
+require 'active_support'
 
 module WebVideo
   autoload :Tools, 'web_video/tools'
@@ -14,8 +15,7 @@ module WebVideo
   # WebVideo.logger.info 'Demo convert'
   #
   def self.logger
-    @logger ||= Logger.new('/dev/null')      
-    @logger
+    @logger ||= Logger.new('/dev/null')
   end
   
   #

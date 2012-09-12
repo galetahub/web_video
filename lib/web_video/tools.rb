@@ -1,3 +1,5 @@
+require "subexec"
+
 module WebVideo
   module Tools
     
@@ -12,17 +14,16 @@ module WebVideo
       command = %Q[#{cmd} #{params}].gsub(/\s+/, " ")
       command = "#{command} 2>&1"
       
-      WebVideo.logger.info(command)
+      WebVideo.logger.info(command)      
       
-      output = `#{command}`
+      sub = Subexec.run(command)
       
-      WebVideo.logger.info(output)
-      
-      unless [expected_outcodes].flatten.include?($?.exitstatus)
-        raise WebVideo::CommandLineError, "Error while running #{cmd}"
+      unless Array.wrap(expected_outcodes).include?(sub.exitstatus)
+        WebVideo.logger.info(sub.output)
+        raise WebVideo::CommandLineError, "Error while running #{command}"
       end
       
-      output
+      sub.output
     end
     
     def self.apply_options(command, options)

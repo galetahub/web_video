@@ -112,4 +112,4 @@ Next code will generate five images: demo_01.jpg, demo_02.jpg, demo_03.jpg ...
 4. Write more documentation
 5. Write tests
 
-Copyright (c) 2011 Aimbulance, released under the MIT license
+Copyright (c) 2012 Fodojo, released under the MIT license
